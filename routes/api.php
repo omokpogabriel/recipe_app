@@ -20,4 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix'=>'/v1'], function(){
    Route::POST('/register', [\App\Http\Controllers\Api\RegistrationController::class,'register']);
+   Route::GET('/login', [\App\Http\Controllers\Api\LoginController::class, 'login']);
+   Route::POST('/logout', [\App\Http\Controllers\Api\LoginController::class, 'logout'])
+       ->middleware('auth:sanctum');
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Rules\PasswordRule;
 use App\Services\ResponseMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -24,13 +25,13 @@ class RegistrationController extends Controller
         $validate = validator($request->all(),[
             'name' => ['required','string', 'min:3','unique:users'],
             'email' => ['required','email','unique:users'],
-            'password' => ['required','min:6']
+            'password' => ['required',new PasswordRule(),'min:6']
         ]);
 
         // checks if the validation fails
         if ($validate->fails() ){
             $response = ResponseMessage::errorResponse("Unable to create New User", $validate->errors());
-            return response()->json($response, 409);
+            return response()->json($response, 400);
         }
 
         // persists the new user to database

@@ -11,7 +11,7 @@ Button Text
 <?php endif; ?>
 <?php echo $__env->renderComponent(); ?>
 
-your verification email is : <?php echo e($user); ?>
+your verification email is : <?php echo e($user->verification_token); ?>
 
 Thanks,<br>
 <?php echo e(config('app.name')); ?>

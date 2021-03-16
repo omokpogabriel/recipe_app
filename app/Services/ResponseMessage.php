@@ -10,7 +10,7 @@ class ResponseMessage
         $response = ["status"=>"Failed"];
         $response["message"] = $message;
         if(isset($data)){
-            $response["data"] =  is_array($data)? $data : json_decode ($data);
+            $response["data"] =  is_array($data)?  json_decode ($data) : $data;
         }
         return $response;
     }
@@ -18,7 +18,7 @@ class ResponseMessage
         $response = ["status"=>"success"];
         $response["message"] = $message;
         if(isset($data)){
-            $response["data"] =  is_array($data)? $data : json_decode ($data);
+            $response["data"] =  $data;
         }
 
         return $response;
