@@ -36,7 +36,9 @@ Route::group(['prefix'=>'/v1'], function(){
         Route::post('/update',[ProfileController::class, 'update']);
     });
 
-    Route::group(['middleware'=>'auth:sanctum','prefix'=>'/recipe'], function(){
-
+    Route::group(['middleware'=>'auth:sanctum','prefix'=>'/recipes'], function(){
+            Route::get('/', [RecipeController::class, 'index']);
+            Route::patch('/edit', [RecipeController::class, 'edit']);
+            Route::patch('/poststatus', [RecipeController::class, 'postStatus']);
     });
 });

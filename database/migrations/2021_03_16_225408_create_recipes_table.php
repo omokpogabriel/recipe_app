@@ -14,8 +14,20 @@ class CreateRecipesTable extends Migration
     public function up()
     {
         Schema::create('recipes', function (Blueprint $table) {
-            $table->id();
+            $table->bigInteger('id')->autoIncrement();
+            $table->string('recipe_name');
+            $table->string('title');
+            $table->string('description');
+            $table->string('recipe_picture');
+            $table->string('ingredients');
+            $table->string('nutritional_value');
+            $table->double('cost',null,2);
+            $table->string('primary_ingredients');
+            $table->string('main_ingredients');
+            $table->string('meal');
+            $table->bigInteger('user_id')->nullable(true);
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
         });
     }
 
