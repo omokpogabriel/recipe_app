@@ -18,7 +18,7 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        return Profile::get();
+        return Profile::where('user_id',auth()->user()->id)->paginate(15);
     }
 
 

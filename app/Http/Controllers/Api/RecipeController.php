@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Recipe;
 use Illuminate\Http\Request;
 
-class recipeController extends Controller
+class RecipeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,7 @@ class recipeController extends Controller
      */
     public function index()
     {
-        //
+        return Recipe::paginate();
     }
 
     /**

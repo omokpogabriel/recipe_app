@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\RecipeController;
 use App\Http\Controllers\Api\RegistrationController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,10 +27,16 @@ Route::group(['prefix'=>'/v1'], function(){
    Route::get('/login', [LoginController::class, 'login']);
    Route::post('/logout', [LoginController::class, 'logout'])
        ->middleware('auth:sanctum');
+    Route::get('/recipes',[RecipeController::class, 'index']);
+
 
     Route::group(['middleware'=>'auth:sanctum','prefix'=>'/profile'], function(){
         Route::get('/',[ProfileController::class, 'index']);
         Route::post('/create',[ProfileController::class, 'store']);
         Route::post('/update',[ProfileController::class, 'update']);
+    });
+
+    Route::group(['middleware'=>'auth:sanctum','prefix'=>'/recipe'], function(){
+
     });
 });
