@@ -44,7 +44,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * dispatches events when a new user is created
+     *
+     * @var string[]
+     */
     protected $dispatchesEvents=[
         'created' => NewUserEvent::class
     ];
+
+    /**
+     * creates a one to one relationship with Profile modes
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function profile(){
+        return $this->hasOne(Profile::class, 'user_id','id');
+    }
 }

@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Rules\PasswordRule;
 use App\Services\ResponseMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 
 class RegistrationController extends Controller
@@ -48,21 +49,21 @@ class RegistrationController extends Controller
     }
 
 
-    public function verifyAccount($id)
+    public function verifyAccount($token)
     {
 
-        $verification =  User::where(['verification_token' =>$id])->first();
+        $verification =  User::where(['verification_token' =>$token])->first();
 
         if(!$verification){
-            return view('login')->with(['verified'=> "invalid verification link"]);
+            return response()->json(['verified'=> "invalid verification link"], 404);
         }
         else {
             if ($verification->isVerified == false) {
-                $user = User::where(['verification_token' => $id])
-                    ->update(['isVerified' => true]);
-                return view('login')->with(['verified' => "Account verifed success, please login"]);
+                $user = User::where(['verification_token' => $token])
+                    ->update(['verified_at' => Date::now(), 'isActive' => true]);
+                return response()->json(['verified' => "Account verifed success, please login"],200);
             }else{
-                return view('login')->with(['verified' => "Account Already verified"]);
+                return response()->json(['verified' => "Account Already verified"],200);
             }
         }
     }

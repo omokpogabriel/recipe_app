@@ -33,8 +33,14 @@ class LoginController extends Controller
         }
 
         $user = User::where(['email'=>$request->email])->first();
-        if( is_null($user->verified_at) ){
+
+        if(is_null($user->verified_at) ){
             $response = ResponseMessage::errorResponse("Email not verified");
+            return response()->json($response, 401);
+        }
+
+        if($user->isActive != true){
+            $response = ResponseMessage::errorResponse("Account not active");
             return response()->json($response, 401);
         }
 

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\RegistrationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +22,15 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::group(['prefix'=>'/v1'], function(){
-   Route::POST('/register', [\App\Http\Controllers\Api\RegistrationController::class,'register']);
-   Route::GET('/login', [\App\Http\Controllers\Api\LoginController::class, 'login']);
-   Route::POST('/logout', [\App\Http\Controllers\Api\LoginController::class, 'logout'])
+   Route::post('/register', [RegistrationController::class,'register']);
+   Route::get('/verify_account/{token}', [RegistrationController::class,'verifyAccount']);
+   Route::get('/login', [LoginController::class, 'login']);
+   Route::post('/logout', [LoginController::class, 'logout'])
        ->middleware('auth:sanctum');
+
+    Route::group(['middleware'=>'auth:sanctum','prefix'=>'/profile'], function(){
+        Route::get('/',[ProfileController::class, 'index']);
+        Route::post('/create',[ProfileController::class, 'store']);
+        Route::post('/update',[ProfileController::class, 'update']);
+    });
 });
