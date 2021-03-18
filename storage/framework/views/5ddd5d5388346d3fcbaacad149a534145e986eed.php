@@ -11,7 +11,7 @@ Button Text
 <?php endif; ?>
 <?php echo $__env->renderComponent(); ?>
 
-your verification email is : <?php echo e($user->verification_token); ?>
+your verification email is : http://127.0.0.1:8000/api/v1/verify_account/<?php echo e($user->verification_token); ?>
 
 Thanks,<br>
 <?php echo e(config('app.name')); ?>

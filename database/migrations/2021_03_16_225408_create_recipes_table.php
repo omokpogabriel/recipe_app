@@ -17,7 +17,7 @@ class CreateRecipesTable extends Migration
             $table->bigInteger('id')->autoIncrement();
             $table->string('recipe_name');
             $table->string('title');
-            $table->string('description');
+            $table->text('description');
             $table->string('recipe_picture');
             $table->string('ingredients');
             $table->string('nutritional_value');
@@ -25,6 +25,7 @@ class CreateRecipesTable extends Migration
             $table->string('primary_ingredients');
             $table->string('main_ingredients');
             $table->string('meal');
+            $table->boolean('approved')->default(false);
             $table->bigInteger('user_id')->nullable(true);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
