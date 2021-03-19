@@ -53,4 +53,19 @@ class RouteTest extends TestCase
         ]);
     }
 
+    public function test_login(){
+
+        User::factory(1)->create();
+
+        $data =
+            ["email" => "admin1@admin.com",
+            "password" => "passwordD123"
+        ];
+
+        $response = $this->call('GET','api/v1/login',$data);
+        $response->assertOk();
+        $response->assertJsonMissing(['status'=>'Failed']);
+        $response->assertJson(['status'=>'success']);
+    }
+
 }
