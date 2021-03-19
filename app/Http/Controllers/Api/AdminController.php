@@ -80,6 +80,16 @@ class AdminController extends Controller
 
     public function authorizeRecipe(Request $request, $id){
 
+        $validator =  validator($request->all(), [
+            'approved' => ['required','boolean'],
+            'comment' => ['required','string','min:7']
+        ]);
+
+        if($validator->fails()){
+            $response = ResponseMessage::errorResponse('Invalid data', $validator->errors());
+            return response()->json($response, 400);
+        }
+
         try{
             $recipe = Recipe::findOrFail($id);
 
@@ -88,8 +98,19 @@ class AdminController extends Controller
                 return response()->json($response, 409);
             }
 
-            $recipe->approved = true;
-            $recipe->save();
+            // approves post if $request->approved is true
+            if($request->approved == true){
+                $recipe->approved = true;
+                $recipe->save();
+            }else{
+                // saves commnets if $request->approved is false
+                $recipe->comment()->create([
+                   'admin_comment' => 23 //$request->comment
+                ]);
+                $response = ResponseMessage::successResponse('recipe not approved,', ['comment'=>$request->comment]);
+                return response()->json($response);
+            }
+
 
             $response = ResponseMessage::successResponse('recipe approved', $recipe);
             return response()->json($response);
@@ -98,6 +119,17 @@ class AdminController extends Controller
             return response()->json($ex->getMessage(),$ex->getStatusCode());
         }
 
+    }
+
+    public function deleteRecipe($id){
+
+        try{
+            $recipe = Recipe::findOrFail($id)->delete();
+            $response = ResponseMessage::successResponse('Recipe deleted');
+            return response()->json($response);
+        } catch(NotFoundHttpException $ex){
+            return response()->json($ex->getMessage(),$ex->getStatusCode());
+        }
     }
 
 

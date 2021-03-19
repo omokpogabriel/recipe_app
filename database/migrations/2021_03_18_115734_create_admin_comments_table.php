@@ -14,8 +14,11 @@ class CreateAdminCommentsTable extends Migration
     public function up()
     {
         Schema::create('admin_comments', function (Blueprint $table) {
-            $table->id();
+            $table->bigInteger('id')->autoIncrement();
+            $table->text('admin_comment');
+            $table->bigInteger('recipe_id');
             $table->timestamps();
+            $table->foreign('recipe_id')->references('id')->on('recipes')->cascadeOnDelete();
         });
     }
 

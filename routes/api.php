@@ -18,10 +18,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
 Route::group(['prefix'=>'/v1'], function(){
    Route::post('/register', [RegistrationController::class,'register'])->name('register');
    Route::get('/verify_account/{token}', [RegistrationController::class,'verifyAccount']);
@@ -52,7 +48,7 @@ Route::group(['prefix'=>'/v1'], function(){
             Route::get('/recipes/status/approved', [AdminController::class, 'getApprovedRecipe'] );
             Route::get('/recipes/status/unapproved', [AdminController::class, 'getUnapprovedRecipe'] );
             Route::post('/recipes/{id}/authorize', [AdminController::class, 'authorizeRecipe'] );
-            Route::delete('/users/{id}/delete', [AdminController::class, 'deleteUser'] ); // not done
+            Route::delete('/recipes/{id}/delete', [AdminController::class, 'deleteRecipe'] ); // not done
             Route::get('/recipes/{id}', [AdminController::class, 'getRecipe'] );
             Route::get('/recipes', [AdminController::class, 'getAllRecipe'] );
     });
