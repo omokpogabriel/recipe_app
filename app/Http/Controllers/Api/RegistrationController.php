@@ -85,7 +85,7 @@ class RegistrationController extends Controller
     public function changePassword(Request $request){
 
          $validate  = validator($request->all(),[
-             'old_password' => ['required', new PasswordRule(), 'min:6']
+             'new_password' => ['required', new PasswordRule(), 'min:6']
          ]);
 
         // checks if the validation fails
@@ -95,7 +95,7 @@ class RegistrationController extends Controller
         }
 
         $user = User::findOrFail(auth()->user()->id)-first();
-        $user->password = Hash::make($request->old_password);
+        $user->password = Hash::make($request->new_password);
         $user->save();
 
         $response = ResponseMessage::successResponse("password changed successfully" );

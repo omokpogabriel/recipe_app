@@ -43,7 +43,10 @@ Approved by the admin.
   &emsp;&emsp;password : "passwordS123" <br/>
    }
 
-  
+  - /changepassword :POST : used to change password
+    
+
+
 
 - /logout : POST : logs a user out <br/>
 
