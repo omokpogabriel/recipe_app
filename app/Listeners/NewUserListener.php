@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Mail;
 class NewUserListener
 {
     /**
-     * Create the event listener.
+     * Create the event listener each time a user registers
      *
      * @return void
      */

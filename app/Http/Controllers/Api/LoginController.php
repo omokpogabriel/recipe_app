@@ -12,9 +12,17 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
 
+    /**
+     * Attempts to login user
+     *    - throws a Bad request code if user input is not well formatted
+     *    - Throws 401 if credentials are incorrect or if email has not been verified or if accou t is inactive
+     *    -  return 200 on success
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(Request $request)
     {
-
         $validator = validator($request->all(),[
             'email' => ['required','email'],
             'password' => ['required',new PasswordRule(),'min:6']
@@ -58,6 +66,11 @@ class LoginController extends Controller
         }
     }
 
+    /**
+     * logs out a user
+     *
+     * @return mixed
+     */
     public function logout(){
        return auth()->user()->tokens('id',auth()->user()->id)->delete();
     }

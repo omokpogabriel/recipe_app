@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class RecipeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a  list of all recipes.
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,12 +22,12 @@ class RecipeController extends Controller
             ->with(['user'=>function($query){
             $query->select('name','email','id');
         }])
-            ->paginate();
+            ->paginate(15);
     }
 
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created recipe post.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -74,7 +74,8 @@ class RecipeController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the a recipe by id
+     *  - throws a 404 id recipe does not exist
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -94,7 +95,10 @@ class RecipeController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified recipe by id.
+     *  - throws a 400 if the input is invalide
+     *  - throws a 404 if the recipe does not exist
+     *  - throws 204 if the recipe has already been approved, therefore cannot be edited by the user
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -121,8 +125,7 @@ class RecipeController extends Controller
             return response()->json($response, 400);
         }
 
-
-            $recipe = Recipe::where(['user_id'=> auth()->user()->id,'id'=>$id])->first();
+        $recipe = Recipe::where(['user_id'=> auth()->user()->id,'id'=>$id])->first();
 
         if(!$recipe){
             $response = ResponseMessage::errorResponse("Recipe not found");
@@ -155,11 +158,17 @@ class RecipeController extends Controller
 
     }
 
+    /**
+     * searches for a recipe by title or recipe_name
+     *  -  throws a 404 if the recipe was not found
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function searchRecipe(Request $request){
 
         $validator = validator($request->all(),[
             'search' => ['required', 'string', 'min:3'],
-
         ]);
 
         if($validator->fails()){
@@ -185,15 +194,14 @@ class RecipeController extends Controller
 
 
     /**
-     * Remove the specified resource from storage.
+     * Deletes a recipe by id or throws a 404 if the id is not found
+     *  A user can only delete a recipe belonging to his/her account
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-
-
         try{
             $recipe = Recipe::where(['user_id'=> auth()->user()->id,'id'=>$id])->first();
         }catch(NotFoundHttpException $ex){

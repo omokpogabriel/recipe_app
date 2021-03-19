@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ProfileController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a user profiles
      *
      * @return \Illuminate\Http\Response
      */
@@ -23,8 +23,11 @@ class ProfileController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Creates a new profile having a one to one relationship with user model
+     *   - throws a 400 if user inputs are not well formatted
+     *   - throws 404 if user does not exist
+     *   - throws a 409 is profile already exists
+     *   -
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -45,8 +48,9 @@ class ProfileController extends Controller
 
         try{
             $profile = User::findOrFail(auth()->user()->id)->profile()->first();
-        }catch(NotFoundHttpException $ex){
-            $response = ResponseMessage::successResponse($ex->getMessage(), $validator->errors());
+        }
+        catch(NotFoundHttpException $ex){
+            $response = ResponseMessage::errorResponse($ex->getMessage(), $validator->errors());
             return response()->json($response, $ex->getStatusCode());
         }
 
@@ -89,7 +93,8 @@ class ProfileController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified User profile
+     *  -   throws a 400 if user inputs are not well formatted
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id

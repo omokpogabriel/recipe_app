@@ -12,6 +12,10 @@ class AdminComment extends Model
     protected $fillable =['admin_comment'];
 
 
+    /**
+     * creates a one to many relation with recipe model
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function recipe(){
         return $this->belongsTo(Recipe::class);
     }

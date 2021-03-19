@@ -14,7 +14,9 @@ class RegistrationController extends Controller
 {
 
     /**
-     * Store a newly created resource in storage.
+     * Creates a new user.
+     *
+     * Sends a verification email to the user if registration was successful
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -49,9 +51,14 @@ class RegistrationController extends Controller
     }
 
 
+    /**
+     * verifies a user email when they click on the verification link sent to their email
+     *
+     * @param $token
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function verifyAccount($token)
     {
-
         $verification =  User::where(['verification_token' =>$token])->first();
 
         if(!$verification){
@@ -68,6 +75,13 @@ class RegistrationController extends Controller
         }
     }
 
+    /**
+     * updates a user password
+     * the user must be logged in before the password can be chaanged
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function changePassword(Request $request){
 
          $validate  = validator($request->all(),[

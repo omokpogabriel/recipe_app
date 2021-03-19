@@ -9,6 +9,8 @@ class PasswordRule implements Rule
     /**
      * Create a new rule instance.
      *
+     * determines the validation rules for password field
+     *
      * @return void
      */
     public function __construct()

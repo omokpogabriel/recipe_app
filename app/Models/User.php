@@ -59,12 +59,18 @@ class User extends Authenticatable
 
     /**
      * creates a one to one relationship with Profile modes
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function profile(){
         return $this->hasOne(Profile::class, 'user_id','id');
     }
 
+    /**
+     * creates a one to many relationship with recipe model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function recipes(){
         return $this->hasMany(Recipe::class);
     }

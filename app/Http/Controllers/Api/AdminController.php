@@ -11,25 +11,39 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AdminController extends Controller
 {
+    /**
+     * get all users registered into the app
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getAllUsers(){
         $user = User::where('roles','!=','admin')->with('profile')->get();
         return response()->json($user);
     }
 
-    public function getUser($id){
 
+    /**
+     * get a particular user by user id,  throws a NOTFOUNDException if the recipe is not found
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUser($id){
         try{
         $user = User::findOrFail($id)->where('roles','!=','admin')->with('profile')->get();
             return response()->json($user);
         } catch(NotFoundHttpException $ex){
             return response()->json($ex->getMessage(),$ex->getStatusCode());
         }
-
-
     }
 
+    /**
+     * Get a particular recipe by id, throws a NOTFOUNDException if the recipe is not found
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getRecipe($id){
-
         try{
             $recipe = Recipe::findOrFail($id)->where('approved',true)->with(['user' => function($query){
                         $query->select(['id','name','email','roles'])->get();
@@ -41,8 +55,12 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * get all recipes, but approved and not approved
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getAllRecipe(){
-
             $recipe = Recipe::with(['user' => function($query){
                 $query->select(['id','name','email','roles'])->get();
             }])->get();
@@ -52,6 +70,12 @@ class AdminController extends Controller
                 return response()->json($recipe);
     }
 
+
+    /**
+     * get only approved recipes
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getApprovedRecipe(){
             $recipe = Recipe::where('approved',true)->with(['user' => function($query){
                 $query->select(['id','name','email','roles'])->get();
@@ -64,6 +88,11 @@ class AdminController extends Controller
 
     }
 
+    /**
+     * Get all unapproved recipes
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getUnapprovedRecipe(){
         $recipe = Recipe::where('approved',false)->with(['user' => function($query){
             $query->select(['id','name','email','roles'])->get();
@@ -78,8 +107,15 @@ class AdminController extends Controller
 
     }
 
-    public function authorizeRecipe(Request $request, $id){
 
+    /**
+     * Authorizea recipe as either approved or not approved
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function authorizeRecipe(Request $request, $id){
         $validator =  validator($request->all(), [
             'approved' => ['required','boolean'],
             'comment' => ['required','string','min:7']
@@ -121,6 +157,13 @@ class AdminController extends Controller
 
     }
 
+
+    /**
+     * Deletes a recipe by id
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteRecipe($id){
 
         try{
