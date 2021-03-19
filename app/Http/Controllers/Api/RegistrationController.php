@@ -94,7 +94,7 @@ class RegistrationController extends Controller
             return response()->json($response, 400);
         }
 
-        $user = User::findOrFail(auth()->user()->id)-first();
+        $user = User::findOrFail(auth()->user()->id);
         $user->password = Hash::make($request->new_password);
         $user->save();
 
