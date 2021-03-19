@@ -62,7 +62,7 @@ class RouteTest extends TestCase
             "password" => "passwordD123"
         ];
 
-        $response = $this->call('GET','api/v1/login',$data);
+        $response = $this->call('POST','api/v1/login',$data);
         $response->assertOk();
         $response->assertJsonMissing(['status'=>'Failed']);
         $response->assertJson(['status'=>'success']);
