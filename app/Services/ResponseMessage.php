@@ -34,7 +34,6 @@ class ResponseMessage
         if(isset($data)){
             $response["data"] =  $data;
         }
-
         return $response;
     }
 }
