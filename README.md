@@ -22,8 +22,8 @@ Approved by the admin.
  - run php artisan migrate
  - php artisan db:seed.      This will insert a default admin username and password
 
-    - admin email: admin11@gmail.com
-    - password: adminoassword123
+    - admin email:  admin1@admin.com
+     - password: passwordD123
 ### Routes:
 ### BaseUrl: http://127.0.0.1/api/v1
 
