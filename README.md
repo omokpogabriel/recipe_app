@@ -1,36 +1,100 @@
-Route::group(['prefix'=>'/v1'], function(){
-Route::post('/register', [RegistrationController::class,'register'])->name('register');
-Route::get('/verify_account/{token}', [RegistrationController::class,'verifyAccount']);
-Route::get('/login', [LoginController::class, 'login'])->name('login');
-Route::post('/logout', [LoginController::class, 'logout'])
-->middleware('auth:sanctum');
-Route::get('/recipes',[RecipeController::class, 'index']);
-Route::get('/recipes/recipe/{id}',[RecipeController::class, 'show']);
-Route::get('/recipes/search',[RecipeController::class, 'searchRecipe']);
+## Recipe App
+
+### Preface
+The recipe app is an api that aims at attracting people together for the sole purpose of sharing recipes.
+<br/> 
+
+# How it works
+ A visitor can go through the website to see a list of shared recipes.
+To add a recipe, the visitor is required to:
+  - create a account by signing up with a username, email and password
+  - click on the confirmation link sent to the email to activate the account
+
+After which such user can post, edit and delete all posts associated with the account. However, a user can only edit a post that has not been 
+Approved by the admin.
+
+## Languages used:
+ - php (laravel)
+ - MySql
+
+## Installation procedure:
+ - run composer install
+ - configure your .env file
+ - run php artisan migrate
+ - php artisan db:seed.      This will insert a default admin username and password
+
+    - admin email: admin11@gmail.com
+    - password: adminoassword123
+### Routes:
+### BaseUrl: http://127.0.0.1/api/v1
+
+- /Register : POST  : registers a new user
+   -{  
+      -- name : "enter your username",
+      -- email : "enteryouremail@gmail.com",
+      -- password : "passwordS123"
+   -}
+
+- /verify_account/{token} : GET  : uses to verify user email
+
+- /login : GET : logins a user
+   -{  
+      -- email : "enteryouremail@gmail.com",
+      -- password : "passwordS123"
+   -}
+
+- /logout : POST : logs a user out
+
+- /recipes : GET : displays a list of recipes
+
+- /recipes/recipe/{id} : GET : Displays a particular recipe by id
+
+- /recipes/search : GET : Search for recipes by title and recipe name 
+   -{  
+      -- search : "search term",
+   -}
+
+### Recipe routes (user token must be set in header to access these routes)
+
+   #### BaseUrl: http://127.0.0.1/api/v1/profile
+
+  - '/' : GET : displays all profiles
+  - /create : POST : create a new profile using form enctype of multipart/form-data
+      #### fields:
+      -- name
+      -- email
+     
+  - /update : POST : updates user profile ( used post as a result of laravel patch issues)
 
 
-    Route::group(['middleware'=>'auth:sanctum','prefix'=>'/profile'], function(){
-        Route::get('/',[ProfileController::class, 'index']);
-        Route::post('/create',[ProfileController::class, 'store']);
-        Route::post('/update',[ProfileController::class, 'update']);
-    });
+### Recipe routes (user token must be set in header to access these routes)
 
-    Route::group(['middleware'=>'auth:sanctum','prefix'=>'/recipes'], function(){
-            Route::get('/', [RecipeController::class, 'index']);
-            Route::post('/postrecipe', [RecipeController::class, 'postStatus']);
-            Route::post('/update/{id}',[RecipeController::class, 'update']);
-            Route::delete('/delete/{id}',[RecipeController::class, 'destroy']);
-    });
+#### BaseUrl: http://127.0.0.1/api/v1/recipes
 
-    Route::group(['middleware'=>['auth.admin', 'auth:sanctum'], 'prefix'=>'admin'], function(){
-            Route::get('/users', [AdminController::class, 'getAllUsers'] );
-            Route::get('/users/{id}', [AdminController::class, 'getUser'] );
-            Route::get('/recipes/status/approved', [AdminController::class, 'getApprovedRecipe'] );
-            Route::get('/recipes/status/unapproved', [AdminController::class, 'getUnapprovedRecipe'] );
-            Route::post('/recipes/{id}/authorize', [AdminController::class, 'authorizeRecipe'] );
-            Route::delete('/recipes/{id}/delete', [AdminController::class, 'deleteRecipe'] ); // not done
-            Route::get('/recipes/{id}', [AdminController::class, 'getRecipe'] );
-            Route::get('/recipes', [AdminController::class, 'getAllRecipe'] );
-    });
+    - '/' : GET : displays all recipes
+    - /postrecipe : POST : create a new recipe 
+     -{  
+      -- name : "enter your username",
+      -- email : "enteryouremail@gmail.com",
+      -- password : "passwordS123"
+    -}
+    
+    - /update/{id} - updates a user recipe by id
+    - /delete/{id} - deletes an unapproved recipe by id
 
-});
+### Admin routes (user token must be set in header to access these routes)
+
+#### BaseUrl: http://127.0.0.1/api/v1/admin
+
+    - /users : GET : gets a list of all users
+    - /users/{id} : GET : Gets a specific user by id
+    - /recipes/status/approved : GET : Get all approved recipes
+    - /recipes/status/unapproved : GET : Get all unapproved recipes
+    - '/recipes/{id}/authorize : POST : approves or disapproves a post
+       - {
+       -}
+     
+     - /recipes/{id}/delete : DELETE : deletes a post by id
+     - '/recipes/{id} : GET : retrieves a particular recipe by id
+     - '/recipes' : GET : retrieves all recipes
+
