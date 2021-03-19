@@ -21,11 +21,12 @@ Approved by the admin.
  - run composer install
  - configure your .env file
  - run php artisan migrate
+ - php artisan db:seed.      This will insert a default admin username and password
 
-
+    - admin email: admin11@gmail.com
+    - password: adminoassword123
 ### Routes:
 ### BaseUrl: http://127.0.0.1/api/v1
-<br/>
 
 - /Register : POST  : registers a new user
    -{  
@@ -34,12 +35,10 @@ Approved by the admin.
       -- password : "passwordS123"
    -}
 
-
 - /verify_account/{token} : GET  : uses to verify user email
 
 - /login : GET : logins a user
    -{  
-      
       -- email : "enteryouremail@gmail.com",
       -- password : "passwordS123"
    -}
@@ -61,7 +60,7 @@ Approved by the admin.
 
   - '/' : GET : displays all profiles
   - /create : POST : create a new profile using form enctype of multipart/form-data
-     -- #### fields:
+      #### fields:
       -- name
       -- email
      
