@@ -44,7 +44,9 @@ Approved by the admin.
    }
 
   - /changepassword :POST : used to change password
-    
+    {
+    "new_password" : "oldpassworD112"
+    }
 
 
 
