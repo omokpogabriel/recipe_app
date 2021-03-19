@@ -30,7 +30,7 @@ class UserFactory extends Factory
             "password" => Hash::make("passwordD123"),
             "roles" => 'admin',
             "email_verified_at" => new \DateTime(),
-            "verification_token" => Str::random(10),
+            "verification_token" => 'hellowrod',
             "verified_at" => Date::now(),
             "isActive" => true
         ];

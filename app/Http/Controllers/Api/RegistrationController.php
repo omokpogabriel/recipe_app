@@ -33,7 +33,7 @@ class RegistrationController extends Controller
 
         // checks if the validation fails
         if ($validate->fails() ){
-            $response = ResponseMessage::errorResponse("Unable to create New User", $validate->errors());
+            $response = ResponseMessage::errorResponse("Bad user input", $validate->errors());
             return response()->json($response, 400);
         }
 

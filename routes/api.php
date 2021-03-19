@@ -22,8 +22,7 @@ Route::group(['prefix'=>'/v1'], function(){
    Route::post('/register', [RegistrationController::class,'register'])->name('register');
    Route::get('/verify_account/{token}', [RegistrationController::class,'verifyAccount']);
    Route::get('/login', [LoginController::class, 'login'])->name('login');
-   Route::post('/logout', [LoginController::class, 'logout'])
-       ->middleware('auth:sanctum');
+   Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
     Route::get('/recipes',[RecipeController::class, 'index']);
     Route::get('/recipes/recipe/{id}',[RecipeController::class, 'show']);
     Route::get('/recipes/search',[RecipeController::class, 'searchRecipe']);
