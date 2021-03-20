@@ -59,18 +59,18 @@ class RegistrationController extends Controller
      */
     public function verifyAccount($token)
     {
-        $verification =  User::where(['verification_token' =>$token])->first();
-
-        if(!$verification){
-            return response()->json(['verified'=> "invalid verification link"], 404);
-        }
-        else {
-            if ($verification->isVerified == false) {
+        $verification = User::where(['verification_token' => $token])->first();
+//        return $verification;
+        if (!$verification) {
+            return response()->json(['verified' => "invalid verification link"], 404);
+        } else {
+            if ( !$verification->email_verified_at ) {
                 $user = User::where(['verification_token' => $token])
-                    ->update(['verified_at' => Date::now(), 'isActive' => true]);
-                return response()->json(['verified' => "Account verifed success, please login"],200);
-            }else{
-                return response()->json(['verified' => "Account Already verified"],200);
+                    ->update(['email_verified_at' => Date::now(), 'isActive' => true]);
+                return response()->json(['verified' => "Account verified success, please login"], 200);
+            }
+            else {
+                return response()->json(['verified' => "Account Already verified"], 200);
             }
         }
     }

@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use Faker\Provider\DateTime;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -29,9 +29,8 @@ class UserFactory extends Factory
             "email" => "admin1@admin.com",
             "password" => Hash::make("passwordD123"),
             "roles" => 'admin',
-            "email_verified_at" => new \DateTime(),
+            "email_verified_at" => DateTime::dateTime(),
             "verification_token" => 'hellowrod',
-            "verified_at" => Date::now(),
             "isActive" => true
         ];
     }
